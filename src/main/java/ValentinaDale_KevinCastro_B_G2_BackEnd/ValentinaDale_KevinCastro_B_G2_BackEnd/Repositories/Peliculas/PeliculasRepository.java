@@ -1,0 +1,9 @@
+package ValentinaDale_KevinCastro_B_G2_BackEnd.ValentinaDale_KevinCastro_B_G2_BackEnd.Repositories.Peliculas;
+
+import ValentinaDale_KevinCastro_B_G2_BackEnd.ValentinaDale_KevinCastro_B_G2_BackEnd.Entities.Peliculas.PeliculasEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface PeliculasRepository extends JpaRepository<PeliculasEntity,Long> {
+}
