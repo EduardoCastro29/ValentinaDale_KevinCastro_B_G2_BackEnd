@@ -19,6 +19,7 @@ import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/premios")
+@CrossOrigin
 public class PremiosController {
 
     @Autowired
@@ -56,7 +57,23 @@ public class PremiosController {
         }
     }
 
-   // @DeleteMapping("/eliminarPremio/{id}")
+    @DeleteMapping("/eliminarPremio/{id}")
+    public ResponseEntity<Map<String,Object>>deletePremio(@PathVariable Long id){
+
+        try {
+            if (!access.deletePremios(id)){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).header("X-Mensaje-error","Proveedor")
+                        .body(Map.of("error","NotFound"));
+            }
+            return ResponseEntity.ok().body(Map.of("status","Proceso Completado","message","Premio eliminado correctamente"));
+
+        }catch (Exception e){
+            return ResponseEntity.internalServerError().body(Map.of("status","error","message","Error al eliminar el premio"));
+
+        }
+
+
+    }
 
 
 
