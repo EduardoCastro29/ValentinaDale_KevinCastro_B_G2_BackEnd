@@ -19,6 +19,8 @@ public class PremiosService {
 
     @Autowired
     private PremiosRepository repo;
+
+    @Autowired
     private PeliculasRepository repoPeliculas;
 
     // Metodo GET
@@ -39,10 +41,8 @@ public class PremiosService {
         try{
             // Primero se pasan los datos DTO del frontEnd a datos Entity para guardar en la base de datos
             PremiosEntity premiosConvert = convertToEntity(premiosDTO);
-
             // Ahora que ya estan en entity se guardan en la base de datos
             PremiosEntity premiosSave = repo.save(premiosConvert);
-
             // Luego que se guardan se convierten en DTO para mostrar en el frontEd
             return convertToDto(premiosSave);
 
@@ -57,11 +57,13 @@ public class PremiosService {
     public PremiosDTO updatePremio(Long id,PremiosDTO premiosDTO){
         PremiosEntity premiosEntity = repo.findById(id).orElseThrow(()-> new IllegalArgumentException("No se encontro ID"));
 
-        premiosEntity.setNombrePremio(premiosDTO.getNombrePremio());
+        if (premiosDTO.getNombrePremio()!=null){
+            premiosEntity.setNombrePremio(premiosDTO.getNombrePremio());
+        }
         premiosEntity.setCategoria(premiosDTO.getCategoria());
         premiosEntity.setAnoPremio(premiosDTO.getAnoPremio());
         premiosEntity.setResultado(premiosDTO.getResultado());
-        premiosEntity.setFecha_Registro(premiosDTO.getFecha_Registro());
+        premiosEntity.setFecha_Registro(premiosDTO.getFechaRegistro());
 
         // Obtener el Id
         // Obtener el ID
@@ -97,7 +99,7 @@ public class PremiosService {
         premiosDTO.setCategoria(entity.getCategoria());
         premiosDTO.setAnoPremio(entity.getAnoPremio());
         premiosDTO.setResultado(entity.getResultado());
-        premiosDTO.setFecha_Registro(entity.getFecha_Registro());
+        premiosDTO.setFechaRegistro(entity.getFecha_Registro());
         // Obtener el ID
         if (entity.getIdPremio()!= null){
             premiosDTO.setNombrePelicula(entity.getPeliculas().getTitulo());
@@ -110,17 +112,20 @@ public class PremiosService {
     }
 
     private PremiosEntity convertToEntity(PremiosDTO premiosDTO){
+        System.out.println("entrando a la conversion del entity");
+
         PremiosEntity premiosEntity= new PremiosEntity();
         premiosEntity.setNombrePremio(premiosDTO.getNombrePremio());
         premiosEntity.setCategoria(premiosDTO.getCategoria());
         premiosEntity.setAnoPremio(premiosDTO.getAnoPremio());
         premiosEntity.setResultado(premiosDTO.getResultado());
-        premiosEntity.setFecha_Registro(premiosDTO.getFecha_Registro());
+        premiosEntity.setFecha_Registro(premiosDTO.getFechaRegistro());
         // Obtener el ID
         if (premiosDTO.getPeliculaId()!= null){
             PeliculasEntity peliculas = repoPeliculas.findById(premiosDTO.getPeliculaId()).orElseThrow(()-> new IllegalArgumentException("No se encontro el ID"));
             premiosEntity.setPeliculas(peliculas);
         }
+        System.out.println("Saliendo de la conversion del entity");
         return premiosEntity;
     }
 }

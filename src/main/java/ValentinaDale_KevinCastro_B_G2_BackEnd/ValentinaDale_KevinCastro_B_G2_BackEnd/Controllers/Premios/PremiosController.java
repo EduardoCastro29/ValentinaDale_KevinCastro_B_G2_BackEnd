@@ -1,8 +1,10 @@
 package ValentinaDale_KevinCastro_B_G2_BackEnd.ValentinaDale_KevinCastro_B_G2_BackEnd.Controllers.Premios;
 
+import ValentinaDale_KevinCastro_B_G2_BackEnd.ValentinaDale_KevinCastro_B_G2_BackEnd.Exceptions.ExceptionPremioNotFound;
 import ValentinaDale_KevinCastro_B_G2_BackEnd.ValentinaDale_KevinCastro_B_G2_BackEnd.Models.DTO.PeliculasDTO;
 import ValentinaDale_KevinCastro_B_G2_BackEnd.ValentinaDale_KevinCastro_B_G2_BackEnd.Models.DTO.PremiosDTO;
 import ValentinaDale_KevinCastro_B_G2_BackEnd.ValentinaDale_KevinCastro_B_G2_BackEnd.Services.Premios.PremiosService;
+import jakarta.persistence.Entity;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -26,7 +28,7 @@ public class PremiosController {
     public List<PremiosDTO> getPeliculas(){return access.getPremios();}
 
     @PostMapping("/ingresarPremio")
-    public ResponseEntity<Map<String,Object>>registerPremio(@Valid @RequestBody PremiosDTO premiosDTO, HttpServletRequest request){
+    public ResponseEntity<?>registerPremio(@Valid @RequestBody PremiosDTO premiosDTO, HttpServletRequest request){
         try {
             PremiosDTO reply = access.insertPremio(premiosDTO);
             if (reply == null){
@@ -43,6 +45,20 @@ public class PremiosController {
                     "detail",e.getMessage()));
         }
     }
+
+    @PutMapping("/actualizarPremio/{id}")
+    public ResponseEntity<?>updatePremio(@PathVariable Long id,@Valid @RequestBody PremiosDTO premiosDTO){
+        try{
+            PremiosDTO premiosUpdate = access.updatePremio(id,premiosDTO);
+            return ResponseEntity.ok(premiosUpdate);
+        }catch (ExceptionPremioNotFound e){
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+   // @DeleteMapping("/eliminarPremio/{id}")
+
+
 
 
 }

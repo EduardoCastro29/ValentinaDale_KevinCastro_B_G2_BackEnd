@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -33,7 +34,7 @@ public class PremiosEntity {
     private String resultado;
 
     @Column(name = "FECHA_REGISTRO")
-    private Date fecha_Registro;
+    private LocalDate fecha_Registro;
 
     @ManyToOne
     @JoinColumn(name = "idPelicula",referencedColumnName = "ID_PELICULA")

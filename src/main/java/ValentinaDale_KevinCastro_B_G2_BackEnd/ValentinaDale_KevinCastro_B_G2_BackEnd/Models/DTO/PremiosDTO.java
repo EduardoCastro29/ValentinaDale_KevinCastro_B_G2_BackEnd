@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Getter@Setter@ToString@EqualsAndHashCode
@@ -26,7 +27,7 @@ public class PremiosDTO {
     @NotBlank(message = "El resultado es obligatorio")
     private String resultado;
 
-    private Date fecha_Registro;
+    private LocalDate fechaRegistro;
 
     private Long peliculaId;
 
