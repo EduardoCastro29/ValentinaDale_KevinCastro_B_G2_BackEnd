@@ -57,9 +57,7 @@ public class PremiosService {
     public PremiosDTO updatePremio(Long id,PremiosDTO premiosDTO){
         PremiosEntity premiosEntity = repo.findById(id).orElseThrow(()-> new IllegalArgumentException("No se encontro ID"));
 
-        if (premiosDTO.getNombrePremio()!=null){
-            premiosEntity.setNombrePremio(premiosDTO.getNombrePremio());
-        }
+        premiosEntity.setNombrePremio(premiosDTO.getNombrePremio());
         premiosEntity.setCategoria(premiosDTO.getCategoria());
         premiosEntity.setAnoPremio(premiosDTO.getAnoPremio());
         premiosEntity.setResultado(premiosDTO.getResultado());
@@ -71,7 +69,8 @@ public class PremiosService {
             PeliculasEntity peliculas = repoPeliculas.findById(premiosDTO.getPeliculaId()).orElseThrow(()-> new IllegalArgumentException("No se encontro el ID"));
             premiosEntity.setPeliculas(peliculas);
         }
-        return convertToDto(premiosEntity);
+        PremiosEntity premiosActualizada = repo.save(premiosEntity);
+        return convertToDto(premiosActualizada);
     }
 
     // Metodo DELETE
